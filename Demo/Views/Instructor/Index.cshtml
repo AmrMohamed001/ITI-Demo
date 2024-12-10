@@ -4,6 +4,7 @@
 }
 
 <h1>Index</h1>
+<a href="/instructor/add" class="btn btn-success">New</a>
 <table class="table table-bordered table-hover">
     <tr>
         <td>No.</td>
@@ -12,6 +13,8 @@
         <td>Department</td>
         <td>Course</td>
         <td>Image</td>
+        <td>---</td>
+
     </tr>
     @foreach (var item in @Model)
     {
@@ -32,9 +35,9 @@
                 @item.Course.Name
         </td>
         <td>
-            <img src="/Images/@item.Image" style="width:80px"/>
+            <img src="/Images/@item.Image" style="width:40px"/>
         </td>
-        <td><a href="/student/showone?id=@item.Id">Details</a></td>
+        <td><a href="/instructor/details/@item.Id">Edit</a></td>
         </tbody>
     }
 </table>

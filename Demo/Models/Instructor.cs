@@ -6,7 +6,7 @@ namespace Demo.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public string Image { get; set; }
+        public string? Image { get; set; }
         public decimal Salary { get; set; }
         public string Address { get; set; }
         [ForeignKey("Department")]

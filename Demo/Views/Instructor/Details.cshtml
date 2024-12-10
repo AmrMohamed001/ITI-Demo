@@ -1,0 +1,37 @@
+﻿@model courseDeptInstructor
+@{
+    ViewBag.Title = "Instructor Details";
+}
+
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h3>Instructor Details</h3>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-sm-3 font-weight-bold">Name:</div>
+                <div class="col-sm-9">@Model.Name</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-3 font-weight-bold">Salary:</div>
+                <div class="col-sm-9">@Model.Salary.ToString("C")</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-3 font-weight-bold">Address:</div>
+                <div class="col-sm-9">@Model.Address</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-3 font-weight-bold">Department:</div>
+                <div class="col-sm-9">@Model.Department.Name</div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-3 font-weight-bold">Course Name:</div>
+                <div class="col-sm-9">@Model.Course.Name</div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <a href="@Url.Action("Index", "Instructor")" class="btn btn-secondary">Back to List</a>
+        </div>
+    </div>
+</div>

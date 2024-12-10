@@ -1,0 +1,45 @@
+﻿@model courseDepts
+@{
+    ViewData["Title"] = "Add";
+}
+
+<h1>Add</h1>
+<form action="/instructor/save" method="post">
+    <div>
+        <label>Name</label>
+        <input name="Name" id="Name" type="text" value="@Model?.Name" class="form-check form-control" />
+    </div>
+    <div>
+        <label>Salary</label>
+        <input name="Salary" id="Salary" value="@Model?.Salary" type="text" class="form-check form-control" />
+    </div>
+    <div>
+        <label>Address</label>
+        <input name="Address" id="Address" value="@Model?.Address" type="text" class="form-check form-control" />
+    </div>
+    <div>
+        <label>DepartmentID</label>
+        @* <input type="number" value="@Model.DepartmentID" id="DepartmentID" name="DepartmentID" class="form form-control" /> *@
+        <select id="DepartmentID" name="DepartmentID" class="form form-control">
+            @foreach (var deptItem in Model.departments)
+            {
+                    <option value="@deptItem.Id">@deptItem.Name</option>
+            }
+
+        </select>
+    </div>
+    <div>
+        <label>CourseId</label>
+        <select id="CourseId" name="CourseId" class="form form-control">
+            @foreach (var courseItem in Model.courses)
+            {
+                <option value="@courseItem.Id">@courseItem.Name</option>
+            }
+        </select>
+    </div>
+
+    <input type="submit" value="Create" class="btn btn-primary" />
+</form>
+<div class="card-footer">
+    <a href="@Url.Action("Index", "Instructor")" class="btn btn-secondary">Back to List</a>
+</div>
