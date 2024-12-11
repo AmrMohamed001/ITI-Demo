@@ -1,0 +1,73 @@
+﻿@model IEnumerable<Course>
+
+@{
+    ViewBag.Title = "Courses Index";
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col">
+            <h2 class="mb-4 text-center">Courses List</h2>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col text-right mb-3">
+            <a asp-action="add" asp-controller="course" class="btn btn-success">
+                <i class="fas fa-plus"></i> Add New Course
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <table class="table table-bordered table-hover table-responsive-lg">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Degree</th>
+                        <th scope="col">Min Degree</th>
+                        <th scope="col">Department</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Any())
+                    {
+                        foreach (var course in Model)
+                        {
+                            <tr>
+                                <th scope="row">@course.Id</th>
+                                <td>@course.Name</td>
+                                <td>@course.Degree</td>
+                                <td>@course.MinDegree</td>
+                                <td>@course.Department.Name</td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <a asp-action="Details" asp-controller="Course" asp-route-id="@course.Id" class="btn btn-info btn-sm">
+                                            <i class="fas fa-info-circle"></i> Details
+                                        </a>
+                                        <a asp-action="Edit" asp-controller="Course" asp-route-id="@course.Id" class="btn btn-primary btn-sm">
+                                            <i class="fas fa-edit"></i> Edit
+                                        </a>
+                                        <a asp-action="Delete" asp-controller="Course" asp-route-id="@course.Id" class="btn btn-danger btn-sm">
+                                            <i class="fas fa-trash"></i> Delete
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="6" class="text-center text-muted">No courses available</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
