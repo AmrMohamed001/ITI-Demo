@@ -21,12 +21,19 @@ namespace Demo.Controllers
 
         public IActionResult Save(Course courseObj)
         {
-            if (courseObj.Name == null && courseObj.Degree == 0 && courseObj.Department == null)
-                return View("add", courseObj);
-            _context.courses.Add(courseObj);
-            _context.SaveChanges();
-            return RedirectToAction("index");
+            if (ModelState.IsValid)
+            {
+                if (courseObj.DepartmentId != 0)
+                {
+                    _context.courses.Add(courseObj);
+                    _context.SaveChanges();
+                    return RedirectToAction("index");
+                }
+                ModelState.AddModelError("DepartmentId", "Please select Department");
 
+            }
+            ViewBag.DeptList = _context.departments.ToList();
+            return View("add", courseObj);
         }
 
         public IActionResult Details(int id)
@@ -52,11 +59,25 @@ namespace Demo.Controllers
 
         public IActionResult SaveEdit(Course courseObj)
         {
-            if (courseObj.Name == null && courseObj.Degree == 0 && courseObj.Department == null)
-                return View("edit", courseObj);
-            _context.courses.Update(courseObj);
-            _context.SaveChanges();
-            return RedirectToAction("index");
+            if (ModelState.IsValid)
+            {
+                if (courseObj.DepartmentId != 0)
+                {
+                    _context.courses.Update(courseObj);
+                    _context.SaveChanges();
+                    return RedirectToAction("index");
+                }
+                ModelState.AddModelError("DepartmentId", "Please select Department");
+            }
+            return View("edit", courseObj);
+
+        }
+
+        public IActionResult checkDegree(int minDegree, int degree)
+        {
+
+            if (minDegree > degree) return Json(false);
+            return Json(true);
         }
     }
 }
