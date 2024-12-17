@@ -8,7 +8,13 @@ namespace Demo
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-
+            // Session Configs
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(10);
+                //options.Cookie.HttpOnly = true;
+                //options.Cookie.IsEssential = true;
+            });
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -17,7 +23,8 @@ namespace Demo
                 app.UseExceptionHandler("/Home/Error");
             }
             app.UseStaticFiles();
-
+            // Session Middlware
+            app.UseSession();
             app.UseRouting();
 
             app.UseAuthorization();
