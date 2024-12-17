@@ -1,0 +1,50 @@
+﻿@model StudentResult
+
+@{
+    ViewBag.Title = "Trainee Course Result";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white text-center">
+                    <h3>Trainee Course Result</h3>
+                </div>
+
+                <div class="card-body">
+                    <table class="table table-bordered text-center">
+                        <tr>
+                            <th>Name</th>
+                            <td>@Model.Name</td>
+                        </tr>
+                        <tr>
+                            <th>Course Name</th>
+                            <td>@Model.CrsName</td>
+                        </tr>
+                        <tr>
+                            <th>Trainee Degree</th>
+                            <td>@Model.Degree</td>
+                        </tr>
+                        <tr>
+                            <th>Result</th>
+                            <td>
+                                <span style="color: @Model.Color; font-size: 1.2rem; font-weight: bold;">
+                                    @Model.State
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="card-footer text-center">
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Back to List
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

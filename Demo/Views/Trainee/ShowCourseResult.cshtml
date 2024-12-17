@@ -1,0 +1,55 @@
+﻿@model List<StudentResult>
+
+@{
+    ViewBag.Title = "Trainee Course Results";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white text-center">
+                    <h3>Trainee Course Results</h3>
+                </div>
+
+                <div class="card-body">
+                    @if (Model != null && Model.Any())
+                    {
+                        <ul class="list-group list-group-flush">
+                            @foreach (var result in Model)
+                            {
+                                <li class="list-group-item">
+                                    <div>
+                                        <strong>Name:</strong> @result.Name
+                                    </div>
+                                    <div>
+                                        <strong>Course Name:</strong> @result.CrsName
+                                    </div>
+                                    <div>
+                                        <strong>Trainee Degree:</strong> @result.Degree
+                                    </div>
+                                    <div>
+                                        <strong>Result:</strong>
+                                        <span style="color: @result.Color; font-weight: bold;">
+                                            @result.State
+                                        </span>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <p class="text-center text-muted">No trainee results available.</p>
+                    }
+                </div>
+
+                <div class="card-footer text-center">
+                    <a asp-action="Index" class="btn btn-secondary">
+                        <i class="fas fa-arrow-left"></i> Back to List
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

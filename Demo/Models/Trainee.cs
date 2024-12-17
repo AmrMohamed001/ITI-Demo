@@ -13,6 +13,6 @@ namespace Demo.Models
         public int DepartmentId { get; set; }
         public Department Department { get; set; }
 
-        List<CrsResult> crsResults { get; set; }
+        public List<CrsResult> crsResults { get; set; }
     }
 }
