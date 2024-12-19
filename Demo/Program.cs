@@ -1,3 +1,8 @@
+using Demo.Models;
+using Demo.Repositories;
+using Demo.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
+
 namespace Demo
 {
     public class Program
@@ -15,6 +20,16 @@ namespace Demo
                 //options.Cookie.HttpOnly = true;
                 //options.Cookie.IsEssential = true;
             });
+            // DIO
+
+            builder.Services.AddDbContext<AppDbContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+            });
+            builder.Services.AddScoped<ICourseRepository, CourseRepository>();
+            builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            builder.Services.AddScoped<IInstructorRepository, InstructorRepository>();
+            builder.Services.AddScoped<ITraineeRepository, TraineeRepository>();
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

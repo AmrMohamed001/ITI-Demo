@@ -10,7 +10,7 @@ namespace Demo.Models
         [Required]
         [MaxLength(20, ErrorMessage = "Name Must Be Less than 20 Char")]
         [MinLength(2, ErrorMessage = "Name Must Be More than 2 Char")]
-        [Unique]
+        //[Unique]
         public string Name { get; set; }
 
         [Required]

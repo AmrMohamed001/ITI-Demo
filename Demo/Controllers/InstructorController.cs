@@ -1,22 +1,30 @@
 ﻿using Demo.Models;
+using Demo.Repositories.Interfaces;
 using Demo.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace Demo.Controllers
 {
     public class InstructorController : Controller
     {
-        private AppDbContext _context = new AppDbContext();
+        private readonly IInstructorRepository Repo;
+        private readonly ICourseRepository CourseRepo;
+        private readonly IDepartmentRepository DeptRepo;
+        public InstructorController(IInstructorRepository repo, IDepartmentRepository deptRepo, ICourseRepository courseRepo)
+        {
+            Repo = repo;
+            DeptRepo = deptRepo;
+            CourseRepo = courseRepo;
+        }
         public IActionResult Index()
         {
-            List<Instructor> instructors = _context.instructors.Include(i => i.Department).Include(x => x.Course).ToList();
+            List<Instructor> instructors = Repo.GetAll();
             return View("Index", instructors);
         }
         public IActionResult Add()
         {
-            var departments = _context.departments.ToList();
-            var courses = _context.courses.ToList();
+            var departments = DeptRepo.GetAll();
+            var courses = CourseRepo.GetAll();
             var courseDept = new courseDepts()
             {
                 courses = courses,
@@ -26,15 +34,18 @@ namespace Demo.Controllers
         }
         public IActionResult save(Instructor instructorObj)
         {
-            if (instructorObj.Salary == null || instructorObj.Name == null || instructorObj.CourseId == null || instructorObj.DepartmentId == null) return RedirectToAction("Add");
-            var newInstructor = _context.instructors.Add(instructorObj);
-            _context.SaveChanges();
+            if (!ModelState.IsValid) return View("Add", instructorObj);
+            if (instructorObj.DepartmentId == 0) ModelState.AddModelError("DepartmentId", "Select Department");
+            if (instructorObj.CourseId == 0) ModelState.AddModelError("CourseId", "Select Course");
+
+            Repo.Create(instructorObj);
+            Repo.Save();
             return RedirectToAction("Index");
 
         }
         public IActionResult Details(int id)
         {
-            var instructor = _context.instructors.Include(x => x.Course).Include(x => x.Department).FirstOrDefault(x => x.Id == id);
+            var instructor = Repo.GetOne(id);
             var courseDeptInstrucor = new courseDeptInstructor()
             {
                 Name = instructor.Name,

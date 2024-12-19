@@ -1,21 +1,27 @@
 ﻿using Demo.Models;
+using Demo.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace Demo.Controllers
 {
     public class CourseController : Controller
     {
-        private AppDbContext _context = new AppDbContext();
+        private readonly ICourseRepository Repo;
+        private readonly IDepartmentRepository DeptRepo;
+        public CourseController(ICourseRepository _repo, IDepartmentRepository deptRepo)
+        {
+            this.Repo = _repo;
+            DeptRepo = deptRepo;
+        }
         public IActionResult Index()
         {
-            var courses = _context.courses.Include(x => x.Department).ToList();
+            var courses = Repo.GetAll();
             return View("index", courses);
         }
 
         public IActionResult Add()
         {
-            ViewBag.DeptList = _context.departments.ToList();
+            ViewBag.DeptList = DeptRepo.GetAll();
             return View("add");
         }
 
@@ -25,35 +31,34 @@ namespace Demo.Controllers
             {
                 if (courseObj.DepartmentId != 0)
                 {
-                    _context.courses.Add(courseObj);
-                    _context.SaveChanges();
+                    Repo.Create(courseObj);
+                    Repo.Save();
                     return RedirectToAction("index");
                 }
                 ModelState.AddModelError("DepartmentId", "Please select Department");
 
             }
-            ViewBag.DeptList = _context.departments.ToList();
+            ViewBag.DeptList = DeptRepo.GetAll();
             return View("add", courseObj);
         }
 
         public IActionResult Details(int id)
         {
-            var course = _context.courses.Include(x => x.Department).FirstOrDefault(x => x.Id == id);
+            var course = Repo.GetOne(id);
             return View("details", course);
         }
 
         public IActionResult Delete(int id)
         {
-            var course = _context.courses.FirstOrDefault(x => x.Id == id);
-            _context.Remove(course);
-            _context.SaveChanges();
+            Repo.Delete(id);
+            Repo.Save();
             return RedirectToAction("index");
         }
 
         public IActionResult Edit(int id)
         {
-            var course = _context.courses.Include(x => x.Department).FirstOrDefault(x => x.Id == id);
-            ViewBag.DeptList = _context.departments.ToList();
+            var course = Repo.GetOne(id);
+            ViewBag.DeptList = DeptRepo.GetAll();
             return View("edit", course);
         }
 
@@ -63,8 +68,8 @@ namespace Demo.Controllers
             {
                 if (courseObj.DepartmentId != 0)
                 {
-                    _context.courses.Update(courseObj);
-                    _context.SaveChanges();
+                    Repo.Update(courseObj);
+                    Repo.Save();
                     return RedirectToAction("index");
                 }
                 ModelState.AddModelError("DepartmentId", "Please select Department");
@@ -75,7 +80,6 @@ namespace Demo.Controllers
 
         public IActionResult checkDegree(int minDegree, int degree)
         {
-
             if (minDegree > degree) return Json(false);
             return Json(true);
         }
